@@ -116,7 +116,7 @@ GET /api/responses/?model_used=GPT-4&start_date=2024-01-01&end_date=2024-01-30
 
 ## Technologies Used
 - **Backend:** Django, Django REST Framework
-- **Database:** PostgreSQL (or SQLite for development)
+- **Database:** ( SQLite for development)
 - **Authentication:** JWT (Django SimpleJWT)
 - **Caching:** Redis
 - **Testing:** Django TestCase (Unit tests)
@@ -132,7 +132,7 @@ python manage.py test api
 For deployment, use services like AWS, Heroku, or DigitalOcean. Recommended setup includes:
 - Gunicorn as WSGI server
 - Nginx as reverse proxy
-- PostgreSQL as database
+- sqllite as database
 - Redis for caching
 - Docker for containerization
 
