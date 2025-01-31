@@ -1,0 +1,15 @@
+Django>=4.0
+djangorestframework>=3.14.0
+django-cors-headers
+psycopg2-binary  # PostgreSQL database adapter for Django
+redis  # Required for caching
+celery  # For background task processing
+channels  # For WebSockets support
+django-redis  # Django integration with Redis
+djangorestframework-simplejwt  # JWT authentication
+pytz  # Timezone support
+python-dotenv  # Environment variable management
+requests  # Making HTTP requests for external APIs
+pytest  # Testing framework
+pytest-django  # Django testing plugin for pytest
+
