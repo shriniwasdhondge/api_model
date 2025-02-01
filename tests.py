@@ -1,4 +1,4 @@
-from api.models import CustomUser  # Importing the custom user model
+from api.models import CustomUser  
 from rest_framework.test import APITestCase
 from rest_framework import status
 from api.models import CustomUser

@@ -5,6 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from .models import Response as ResponseModel
 from .serializers import ResponseSerializer
+from django_ratelimit.decorators import ratelimit
+
 
 
 class CustomPagination(PageNumberPagination):
@@ -12,22 +14,17 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-class ResponseListCreateAPI(APIView):
-    @ratelimit(key='ip', rate='5/m', method='ALL')
-    def get(self, request):
-        cached_responses = cache.get('responses')
-        if cached_responses is None:
-            responses = ResponseModel.objects.all()
-            paginator = CustomPagination()
-            paginated_responses = paginator.paginate_queryset(responses, request)
-            serializer = ResponseSerializer(paginated_responses, many=True)
-            cache.set('responses', serializer.data, timeout=60*15)
-        else:
-            return APIResponse(cached_responses)
+from django.utils.decorators import method_decorator
 
+@method_decorator(ratelimit(key='ip', rate='5/m', method='ALL'), name='dispatch')
+class ResponseListCreateAPI(APIView):
+    def get(self, request):
+        paginator = CustomPagination()
+        responses = ResponseModel.objects.all()
+        paginated_responses = paginator.paginate_queryset(responses, request)
+        serializer = ResponseSerializer(paginated_responses, many=True)
         return paginator.get_paginated_response(serializer.data)
 
-    @ratelimit(key='ip', rate='5/m', method='ALL')
     def post(self, request):
         serializer = ResponseSerializer(data=request.data)
         if serializer.is_valid():
